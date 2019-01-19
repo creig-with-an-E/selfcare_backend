@@ -4,7 +4,8 @@
   "description": "this is the backend for the self care application. this application serves both professionals and clients",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node app.js"
   },
   "keywords": [
     "selfcare"
