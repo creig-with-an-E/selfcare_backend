@@ -1,0 +1,17 @@
+{
+  "name": "selfcare_nodejs",
+  "version": "1.0.0",
+  "description": "this is the backend for the self care application. this application serves both professionals and clients",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "selfcare"
+  ],
+  "author": "Fortune Creig Phiri; Ife Ajibola; Sherwayne Walrond",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
