@@ -13,6 +13,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
+//maybe use special id for professional user?
 router.get('/:userId', (req, res, next) => {
     const id = req.params.userId;
     if(id === 'special'){
