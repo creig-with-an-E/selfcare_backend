@@ -12,5 +12,5 @@ app.use(bodyParser.json());
 app.listen(port,()=>{console.log(`server started. port: ${port}`)});
 
 //test route
-app.post('/',(req, res)=>{console.log(req.body.email)});
+app.post('/',(req, res)=>{res.send({name:"working"})});
 
