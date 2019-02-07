@@ -1,16 +1,15 @@
 const express = require('express');
 const app = express();
-const path = require('path')
-const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
 
 
+const userRoutes = require('./api/routes/users');
 
-app.listen(port,()=>{console.log(`server started. port: ${port}`)});
+app.use('/users', userRoutes);
 
-//test route
-app.post('/',(req, res)=>{console.log(req.body.email)});
+
+
+
+
+
+module.exports = app;
 
