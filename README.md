@@ -15,6 +15,20 @@ In no particular order:
 * Sherwayne Walrond
 * Ife Ajibola
 
+###Roles and duties for the week
+* Paul - Authentication and registration
+       - facebook and google integration
+       - upload image
+       CRUD-> return image for specific professional
+       
+* Sherwayne - "Professional" and "regular" user models
+            - "Professional" and "regular" user views
+            - "Professional" and "regular" user CRUD functionality
+            
+*Creig - User interests view
+       - Admin View
+       - Registration/Login
+
 <h1>Please dont push to the master.</h1>
 everyone to create a minimum of 1 branch and any other branch as needed. 
 e.g creig_master /sherwayne_master /paul_master /testing_branch /merge_branch; 
