@@ -2,10 +2,10 @@
   "name": "selfcare_nodejs",
   "version": "1.0.0",
   "description": "this is the backend for the self care application. this application serves both professionals and clients",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "keywords": [
     "selfcare"
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongoose": "^5.4.10"
   }
 }
