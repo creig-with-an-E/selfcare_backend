@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
 const proUserSchema = mongoose.Schema({
+    /*
+    *
+    * */
+
     _id: mongoose.Schema.Types.ObjectId,
-    names:{
-        name: String,
+    name:{
         first: String,
         last: String
     },
