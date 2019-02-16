@@ -1,16 +1,30 @@
 const express = require('express');
 const app = express();
-const path = require('path')
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }))
+const mongoose = require('mongoose');
+const userRoutes = require('./api/routes/users');
+const professionalRoutes = require('./api/routes/professionals');
+
+/*This is where we connect to the mLab database, using this connection string*/
+mongoose.connect('mongodb://johndoe:mcqxLUR6xzPe45e@ds247690.mlab.com:47690/selfcaredb',
+    { useNewUrlParser: true }
+    );
+
+/*to use the default node.js promise implementation, instead of the mongoose version.
+This will also remove the deprecation warning.*/
+mongoose.Promise = global.Promise;
+
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use('/users', userRoutes);
+app.use('/professionals', professionalRoutes);
 
 
 
-app.listen(port,()=>{console.log(`server started. port: ${port}`)});
 
-//test route
-app.post('/',(req, res)=>{res.send({name:"working"})});
+
+
+module.exports = app;
+
 
