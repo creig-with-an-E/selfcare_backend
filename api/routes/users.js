@@ -23,6 +23,35 @@ router.post('/',(req, res, next) => {
     res.status(200).json({message:"complete"})
 });
 
+//This route is a GET request that fetches all users
+router.get('/',(req,res,next) => {
+   User.find()
+       .select('name contact _id')
+       .exec()
+       .then(docs => {
+           const response = {
+               users: docs.map(doc => {
+                   return {
+                       _id: doc._id,
+                       name: doc.name,
+                       contact: doc.contact,
+                       age: doc.age,
+                       request: {
+                           type: 'GET',
+                           url: 'http://localhost:3000/users/'
+                       }
+                   }
+               })
+           };
+                res.status(200).json(response);
+       })
+       .catch(err => {
+           res.status(500).json({
+               error: err
+           });
+       });
+});
+
 
 
 module.exports = router;
