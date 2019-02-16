@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const proUserSchema = mongoose.Schema({
+const professionalSchema = mongoose.Schema({
     /*
-    *
+    *This is the professional's schema which consists of id, name, contact, and age
     * */
 
     _id: mongoose.Schema.Types.ObjectId,
@@ -24,4 +24,4 @@ const proUserSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('proUser', proUserSchema);
+module.exports = mongoose.model('professional', professionalSchema);
