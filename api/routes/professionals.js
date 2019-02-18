@@ -39,7 +39,8 @@ router.get('/',(req,res,next) => {
         .select()
         .exec()
         .then(proUsers => {
-            res.status(200).json({proUsers});    //returns list of profUsers
+            //proUsers is already javascript object, 
+            res.status(200).json(proUsers);    //returns array of profUsers objects back to client. 
         })
         .catch(err => {
             res.status(500).json({
