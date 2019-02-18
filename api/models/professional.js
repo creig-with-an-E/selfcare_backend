@@ -6,22 +6,25 @@ const professionalSchema = mongoose.Schema({
     * */
 
     _id: mongoose.Schema.Types.ObjectId,
-    name:{
+    names:{ // this will be a composite object containing the both first and last name
         first: String,
         last: String
     },
+    account:{
+        userName:String,
+        password:String,
+    },
     contact:{
-    email: String,
-        phone: Number,
+        email: String,
+        phone: Number, 
         address: String
-},
-    age: {
-        type: Number,
-        min: 0
-    }
-
-
-
+    },
+    images:{
+        imageName:String    // this store the name of the image. directory path will be static
+    },
+    bio:{type: String},
+    rating:Number,  
+    dob: Date,  //date of birth as opposed to age
 });
 
 module.exports = mongoose.model('professional', professionalSchema);

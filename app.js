@@ -17,8 +17,8 @@ mongoose.Promise = global.Promise;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use('/users', userRoutes);
-app.use('/professionals', professionalRoutes);
+app.use('/users', userRoutes);  //users route
+app.use('/professionals', professionalRoutes);  //professional route
 
 
 
