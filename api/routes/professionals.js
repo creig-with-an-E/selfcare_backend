@@ -19,15 +19,19 @@ router.post('/',(req,res) => {
             password:req.body.password
         },
         contact: {
-            phone: request.body.phone,
+            phone: req.body.phone,
             email: req.body.email,
             address: req.body.address
         },
         dob: req.body.dob,   //this is the reference to date of birth
         bio: req.body.bio
     });
-    professional.save();
-    res.status(200).json(professional);
+    professional.save((err)=>{
+        if(err){
+            res.status(400).json({error:"error occured"})
+        }
+        res.status(200).json(professional);
+    });
 
 
 
