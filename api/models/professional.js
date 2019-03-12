@@ -6,7 +6,7 @@ const professionalSchema = mongoose.Schema({
     * */
 
     _id: mongoose.Schema.Types.ObjectId,
-    names:{ // this will be a composite object containing the both first and last name
+    name:{ // this will be a composite object containing the both first and last name
         first: String,
         last: String
     },
@@ -25,6 +25,11 @@ const professionalSchema = mongoose.Schema({
     bio:{type: String},
     rating:Number,  
     dob: Date,  //date of birth as opposed to age
+    professionalType:{
+        barber: String,
+        beautician: String
+    }
+
 });
 
 module.exports = mongoose.model('professional', professionalSchema);

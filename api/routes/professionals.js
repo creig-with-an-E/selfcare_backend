@@ -24,7 +24,8 @@ router.post('/',(req,res) => {
             address: req.body.address
         },
         dob: req.body.dob,   //this is the reference to date of birth
-        bio: req.body.bio
+        bio: req.body.bio,
+        professionalType: req.body.professionalType
     });
     professional.save((err)=>{
         if(err){
@@ -38,9 +39,10 @@ router.post('/',(req,res) => {
 });
 
 //This route uses a GET request that will fetch all Professional users.
-router.get('/',(req,res,next) => {
+router.get('/findByName',(req,res,next) => {
     Professional.find()
         .select()
+        .where('name.first',req.body.name)
         .exec()
         .then(professionals => {
             //proUsers is already javascript object,
@@ -53,11 +55,14 @@ router.get('/',(req,res,next) => {
         });
 });
 
+//This route will fetch all professional users by name
+
+
 //This route will find all professional by their ID.
-router.get('/:professionalId',(req,res,next) => {
-    const id = req.params.professionalId;
+router.get('/findById',(req,res,next) => {
+    const id = req.body._id;
     Professional.findById(id)
-        .select('_id name profession')
+        .select()
         .exec()
         .then(doc => {
             //testing that its coming from database
@@ -82,12 +87,71 @@ router.get('/:professionalId',(req,res,next) => {
         })
 });
 
-//This route will fetch all professional users by name
-router.get('/:professionalName',(req,res,next) => {
-    console.log(req.params);
-    res.status(200).json({name: 'success'})
+router.get('/',(req,res)=>{
+    Professional.find()
+        .select()
+        .exec()
+        .then(professionals => {
+            //proUsers is already javascript object,
+            res.status(200).json(professionals);    //returns array of professional user objects back to client.
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
 
- });
+router.get('/findByAge', (req,res) => {
+    Professional.find()
+        .select()
+        .where('age', req.body.dob)
+        .exec()
+        .then(professionals => {
+            //proUsers is already javascript object,
+            res.status(200).json(professionals);    //returns array of professional user objects back to client.
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+router.get('/findByProfessionalType', (req,res) => {
+    Professional.find()
+        .select()
+        .where('professionalType', req.body.professionalType)
+        .exec()
+        .then(professionals => {
+            //proUsers is already javascript object,
+            res.status(200).json(professionals);    //returns array of professional user objects back to client.
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+router.post('/updateProfessional', (req,res) => {
+    console.log('*******************',req.body.data);
+    Professional.findByIdAndUpdate(req.body.id, req.body.data, (error,res) => {
+        if (error){
+            console.log(error)
+        }
+    }).then
+    ((result) => {
+        res.status(200).json({
+            result
+        });
+    } ).catch( (error) => {
+            res.status(400).json({
+                error
+            })
+        }
+    )
+})
+
 
 
 
