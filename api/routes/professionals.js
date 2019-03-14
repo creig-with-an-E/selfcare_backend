@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Professional = require('../models/professional');
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcrypt');
 
 //This route uses a post request that creates and stores a new professional user to the database.
 router.post('/',(req,res) => {
@@ -36,7 +36,7 @@ router.post('/',(req,res) => {
 });
 
 router.post('/signup',(req,res,next) => {
-    Professional.find({email: req.body.email})
+    Professional.find({contact:{email: req.body.email}})
         .exec()
         .then(user => {
             if(user.length >= 1){
@@ -52,7 +52,7 @@ router.post('/signup',(req,res,next) => {
                     }else{
                         const user = new Professional({
                             _id: new mongoose.Types.ObjectId(),
-                            email: req.body.email,
+                            contact:{email: req.body.email},
                             password: hash
                         });
                         user.save()
