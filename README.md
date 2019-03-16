@@ -1,34 +1,16 @@
-# selfcare_backend
+## selfcare_backend
 
+
+### Description
 This repo houses the following :
-- node.js -> this conntains the backend used for the application
+- A node.js server that handles the api requests for the self care mobile application.
+- Self care is a cross platform application built using React Native. The app will serve both Android and IOS users.
 
-This repo serves as an extension to github.com/selfcareapp/selfcare_frontend. The repos were later separated so to allow for the applications to be easily hosted across different servers. 
-This application is hosted on https://frozen-hamlet-87170.herokuapp.com.
+This repo serves as an extension to [Self-Care](github.com/selfcareapp/selfcare_frontend) . The repos were later separated so to allow for the applications to be easily hosted across different servers. 
+During the testing stage this application will be hosted on  https://frozen-hamlet-87170.herokuapp.com.
 
-during the initial stage of development the application will only return the app name as confirmation that the server is running.
-
-Project authors remain the same as for the frontend:
+### Project authors:
 
 In no particular order:
-* Fortune Creig Phiri
-* Sherwayne Walrond
-* Ife Ajibola
-
-###Roles and duties for the week
-* Paul - Authentication and registration
-       - facebook and google integration
-       - upload image
-       CRUD-> return image for specific professional
-       
-* Sherwayne - "Professional" and "regular" user models
-            - "Professional" and "regular" user views
-            - "Professional" and "regular" user CRUD functionality
-            
-*Creig - User interests view
-       - Admin View
-       - Registration/Login
-
-<h1>Please dont push to the master.</h1>
-everyone to create a minimum of 1 branch and any other branch as needed. 
-e.g creig_master /sherwayne_master /paul_master /testing_branch /merge_branch; 
+* Fortune Creig Phiri - lead frontend developer / jnr backend dev
+* Sherwayne Walrond - lead backend developer
