@@ -17,7 +17,11 @@ const professionalSchema = mongoose.Schema({
     contact:{
         email: String,
         phone: Number, 
-        address: String
+        address: String,
+    },
+    location: {
+        type:{type:String},
+        coordinates:[]
     },
     images:{
         imageName:String    // this store the name of the image. directory path will be static
@@ -32,4 +36,5 @@ const professionalSchema = mongoose.Schema({
 
 });
 
+professionalSchema.index({ location: "2dsphere" });
 module.exports = mongoose.model('professional', professionalSchema);

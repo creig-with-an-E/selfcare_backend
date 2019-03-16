@@ -26,6 +26,7 @@ router.post('/',(req,res) => {
         dob: req.body.dob,   //this is the reference to date of birth
         bio: req.body.bio,
         professionalType: req.body.professionalType
+
     });
     professional.save((err)=>{
         if(err){
@@ -53,7 +54,11 @@ router.post('/signup',(req,res,next) => {
                         const user = new Professional({
                             _id: new mongoose.Types.ObjectId(),
                             contact:{email: req.body.email},
-                            password: hash
+                            account:{password: hash},
+                            location: {
+                                type:"Point",
+                                coordinates:[req.body.longitude,req.body.latitude]
+                            }
                         });
                         user.save()
                             .then(result => {
@@ -204,10 +209,26 @@ router.post('/updateProfessional', (req,res) => {
             })
         }
     )
-})
+});
 
+router.get('/findByLocation',(req,res)=>{
 
+    const location = req.body.location;     //user location
 
+    Professional.find({
+        location:{
+            $near:{
+                $maxDistance:10000,      //max distance of 1km from user
+                $geometry:{
+                    type:"Point",
+                    coordinates: location
+                }
+            }
+        }
+    }).then((results) => {
+        res.status(200).json(results);
+    }).catch((error)=>res.status(400).json({err:error}))
+});
 
 
 module.exports = router;
