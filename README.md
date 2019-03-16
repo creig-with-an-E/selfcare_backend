@@ -12,5 +12,5 @@ During the testing stage this application will be hosted on  https://frozen-haml
 ### Project authors:
 
 In no particular order:
-* [Fortune Creig Phiri](https://www.creigphiri.github.io) - lead frontend developer / jnr backend dev
+* [Fortune Creig Phiri](https://creigphiri.github.io) - lead frontend developer / jnr backend dev
 * Sherwayne Walrond - lead backend developer
