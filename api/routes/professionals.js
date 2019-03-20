@@ -61,8 +61,8 @@ router.post('/signup',(req,res,next) => {
         });
 });
 
-
 router.post('/login',(req,res,next) => {
+    console.log(req.body);
     Professional.find(
         {
             contact: {
@@ -105,7 +105,8 @@ router.post('/login',(req,res,next) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({
-                error:err
+                error:err,
+                data:req.body
             });
         });
 });

@@ -40,9 +40,13 @@ const professionalSchema = mongoose.Schema({
     },
     bio:{type: String},
     rating:{type:Number,default:3},
-    dob: Date  //date of birth as opposed to age
+    dob: Date,  //date of birth as opposed to age
 
-
+    messages:{
+        type:String,
+        sender_id: String,  //this is the user _id
+        message: String,
+    }
 });
 
 professionalSchema.index({ location: "2dsphere" });
