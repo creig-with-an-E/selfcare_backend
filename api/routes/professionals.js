@@ -6,37 +6,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 //This route uses a post request that creates and stores a new professional user to the database.
-router.post('/',(req,res) => {
-    const professional = new Professional({
-
-        //Here we are referencing the properties of the professional user model
-        _id: new mongoose.Types.ObjectId(),
-        name: {
-            first: req.body.firstName,
-            last: req.body.lastName
-        },
-        account:{
-            userName:req.body.userName,
-            password:req.body.password
-        },
-        contact: {
-            phone: req.body.phone,
-            email: req.body.email,
-            address: req.body.address
-        },
-        dob: req.body.dob,   //this is the reference to date of birth
-        bio: req.body.bio,
-        professionalType: req.body.professionalType
-
-    });
-    professional.save((err)=>{
-        if(err){
-            res.status(400).json({error:"error occurred"})
-        }
-        res.status(200).json(professional);
-    });
-});
-
 
 router.post('/signup',(req,res,next) => {
     Professional.find({
@@ -266,7 +235,7 @@ router.get('/findByLocation',(req,res)=>{
                 $maxDistance:10000,      //max distance of 1km from user
                 $geometry:{
                     type:"Point",
-                    coordinates: location
+                    coordinates: location   //should be updated
                 }
             }
         }
@@ -274,5 +243,12 @@ router.get('/findByLocation',(req,res)=>{
         res.status(200).json(results);
     }).catch((error)=>res.status(400).json({err:error}))
 });
+
+//fall routers that handles unknown routes
+router.get('*',(req,res)=>{
+    res.status(404).json({error:"router error"})
+});
+
+router.post('/*',(req,res)=>res.status(404).json({error:"router error"}))
 
 module.exports = router;
