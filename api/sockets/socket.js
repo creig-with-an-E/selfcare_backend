@@ -9,10 +9,10 @@ module.exports.listen = function(app){
         console.log("connected");
 
         socket.on("new_message",(data)=>{
+            console.log(data)
             socket.emit("new_message",data)
         });
     });
-
 
     return io
 };
