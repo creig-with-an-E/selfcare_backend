@@ -40,11 +40,8 @@ const professionalSchema = mongoose.Schema({
     },
     bio:{type: String},
     rating:{type:Number,default:3},
-    dob: Date,  //date of birth as opposed to age
-    professionalType:{
-        barber: String,
-        beautician: String
-    }
+    dob: Date  //date of birth as opposed to age
+
 
 });
 

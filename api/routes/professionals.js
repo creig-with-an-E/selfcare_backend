@@ -107,7 +107,7 @@ router.post('/login',(req,res,next) => {
                     message: 'Authentication failed'
                 });
             }
-            bcrypt.compare(req.body.password, professional.account.password, (err, result)=> {
+            bcrypt.compare(req.body.password, professional[0].account.password, (err, result)=> {
                if(err){
                    return res.status(401).json({
                        message: 'Authentication Failed'
@@ -115,7 +115,7 @@ router.post('/login',(req,res,next) => {
                }
                if(result){
                    const token = jwt.sign({
-                       email:professional[0].email,
+                       email:professional[0].contact.email,
                        professionalId: professional[0]._id
                    },
                        process.env.JWT_KEY,
