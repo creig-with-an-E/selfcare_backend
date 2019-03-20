@@ -15,8 +15,8 @@ router.post('/signup',(req,res,next) => {
                 }
         })
         .exec()
-        .then(user => {
-            if(user.length >= 1){
+        .then(professional => {
+            if(professional.length >= 1){
                 return res.status(409).json({
                     message: 'email exists'
                 });
@@ -128,7 +128,7 @@ router.delete('/:userId',(req,res,next) => {
 });
 
 
-//This route uses a GET request that will fetch all Professional users.
+//This route uses a GET request that will fetch all Professional users by name.
 router.get('/findByName',(req,res,next) => {
     Professional.find()
         .select()
@@ -250,6 +250,6 @@ router.get('*',(req,res)=>{
     res.status(404).json({error:"router error"})
 });
 
-router.post('/*',(req,res)=>res.status(404).json({error:"router error"}))
+router.post('/*',(req,res)=>res.status(404).json({error:"router error"}));
 
 module.exports = router;
