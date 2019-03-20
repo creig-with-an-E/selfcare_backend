@@ -3,6 +3,7 @@ const router = express.Router();
 const Professional = require('../models/professional');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 //This route uses a post request that creates and stores a new professional user to the database.
 router.post('/',(req,res) => {
@@ -36,8 +37,14 @@ router.post('/',(req,res) => {
     });
 });
 
+
 router.post('/signup',(req,res,next) => {
-    Professional.find({contact:{email: req.body.email}})
+    Professional.find({
+        contact:
+                {
+                    email: req.body.email
+                }
+        })
         .exec()
         .then(user => {
             if(user.length >= 1){
@@ -53,7 +60,12 @@ router.post('/signup',(req,res,next) => {
                     }else{
                         const user = new Professional({
                             _id: new mongoose.Types.ObjectId(),
-                            contact:{email: req.body.email},
+
+                                firstName:req.body.firstName,
+                                lastName:req.body.lastName
+                            ,
+                            contact:{
+                                email: req.body.email},
                             account:{password: hash},
                             location: {
                                 type:"Point",
@@ -77,6 +89,55 @@ router.post('/signup',(req,res,next) => {
                 })
 
             }
+        });
+});
+
+
+router.post('/login',(req,res,next) => {
+    Professional.find(
+        {
+            contact: {
+                email:req.body.email
+            }
+        })
+        .exec()
+        .then(professional =>{
+            if(professional.length < 1){
+                return res.status(401).json({
+                    message: 'Authentication failed'
+                });
+            }
+            bcrypt.compare(req.body.password, professional.account.password, (err, result)=> {
+               if(err){
+                   return res.status(401).json({
+                       message: 'Authentication Failed'
+                   });
+               }
+               if(result){
+                   const token = jwt.sign({
+                       email:professional[0].email,
+                       professionalId: professional[0]._id
+                   },
+                       process.env.JWT_KEY,
+                       {
+                           expiresIn: "1h"
+                       }
+                       );
+                   return res.status(200).json({
+                       message: 'Authentication successful',
+                       token: token
+                   });
+               }
+               res.status(401).json({
+                   message: 'Authentication failed'
+               });
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error:err
+            });
         });
 });
 
@@ -161,22 +222,6 @@ router.get('/',(req,res)=>{
         });
 });
 
-router.get('/findByAge', (req,res) => {
-    Professional.find()
-        .select()
-        .where('age', req.body.dob)
-        .exec()
-        .then(professionals => {
-            //proUsers is already javascript object,
-            res.status(200).json(professionals);    //returns array of professional user objects back to client.
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
-});
-
 router.get('/findByProfessionalType', (req,res) => {
     Professional.find()
         .select()
@@ -193,7 +238,7 @@ router.get('/findByProfessionalType', (req,res) => {
         });
 });
 router.post('/updateProfessional', (req,res) => {
-    console.log('*******************',req.body.data);
+    console.log(req.body.data);
     Professional.findByIdAndUpdate(req.body.id, req.body.data, (error,res) => {
         if (error){
             console.log(error)
@@ -229,6 +274,5 @@ router.get('/findByLocation',(req,res)=>{
         res.status(200).json(results);
     }).catch((error)=>res.status(400).json({err:error}))
 });
-
 
 module.exports = router;

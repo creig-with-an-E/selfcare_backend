@@ -6,20 +6,32 @@ const professionalSchema = mongoose.Schema({
     * */
 
     _id: mongoose.Schema.Types.ObjectId,
-    name:{ // this will be a composite object containing the both first and last name
-        first: {type:String, required:true},
-        last: {type:String, required:true}
-    },
+    // this will be a composite object containing the both first and last name
+        firstName: {type:String, required:true},
+        lastName: {type:String, required:true},
+
     account:{
         userName:String,
         password:String,
     },
     contact:{
-        email: {type:String, required:true},
+        email: {
+            type:String,
+            required:true
+        },
         phone: Number, 
-        address: String,
+        address: {
+            type: String,
+            streetName: String,
+            streetNumber: Number,
+            province: String,
+            postalCode: String,
+            country: String
+        }
+
     },
     location: {
+        //this stores the geolocation which is used to determine closest professional to user
         type:{type:String},
         coordinates:[]
     },
