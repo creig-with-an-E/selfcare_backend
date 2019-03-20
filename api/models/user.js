@@ -3,10 +3,8 @@ const mongoose = require('mongoose');
 const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     // this will be a composite object containing the both first and last name
-    name:{
-        first:String,
-        last:String
-    },
+    firstName: {type:String, required:true},
+    lastName: {type:String, required:true},
 
     account:{
         userName:String,

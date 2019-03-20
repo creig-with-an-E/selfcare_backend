@@ -50,8 +50,8 @@ router.post('/signup',(req,res,next) => {
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
 
-                            name:req.body.name.first,
-                            name:req.body.name.last
+                            firstName:req.body.firstName,
+                            lastName:req.body.lastName
                             ,
                             contact:{
                                 email: req.body.email},
