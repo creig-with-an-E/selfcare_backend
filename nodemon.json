@@ -1,5 +1,6 @@
 {
   "env":{
-    "MLAB_PW": "mcqxLUR6xzPe45e"
+    "MLAB_PW": "mcqxLUR6xzPe45e",
+    "JWT_KEY": "secret"
   }
 }
