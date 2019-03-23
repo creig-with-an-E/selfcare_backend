@@ -19,6 +19,5 @@
     "mongoose": "^5.4.10",
     "socket.io": "^2.2.0",
     "jsonwebtoken": "^8.5.1"
-
   }
 }
