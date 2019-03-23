@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    // this will be a composite object containing the both first and last name
     firstName: {type:String, required:true},
     lastName: {type:String, required:true},
 
@@ -17,7 +16,6 @@ const userSchema = mongoose.Schema({
         },
         phone: Number,
         address: {
-            type: String,
             streetName: String,
             streetNumber: Number,
             province: String,
@@ -25,11 +23,6 @@ const userSchema = mongoose.Schema({
             country: String
         }
 
-    },
-    location: {
-        //this stores the geolocation which is used to determine closest professional to user
-        type:{type:String},
-        coordinates:[]
     },
     images:{
         imageName:String    // this store the name of the image. directory path will be static

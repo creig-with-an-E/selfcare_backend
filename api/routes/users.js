@@ -7,23 +7,23 @@ const jwt = require('jsonwebtoken');
 
 
 //This route is a post request that creates and stores a new user to the database.
-router.post('/',(req, res, next) => {
-    const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        name: {
-            first: req.body.firstName,
-            last: req.body.lastName
-        },
-
-        contact: {
-            email: req.body.email,
-            address: req.body.address
-        },
-        age: req.body.age
-    });
-    user.save();
-    res.status(200).json({message:"complete"})
-});
+// router.post('/',(req, res, next) => {
+//     const user = new User({
+//         _id: new mongoose.Types.ObjectId(),
+//         name: {
+//             first: req.body.firstName,
+//             last: req.body.lastName
+//         },
+//
+//         contact: {
+//             email: req.body.email,
+//             address: req.body.address
+//         },
+//         age: req.body.age
+//     });
+//     user.save();
+//     res.status(200).json({message:"complete"})
+// });
 
 //This route uses a post request that creates and stores a new user to the database.
 
@@ -55,16 +55,12 @@ router.post('/signup',(req,res,next) => {
                             ,
                             contact:{
                                 email: req.body.email},
-                            account:{password: hash},
-                            location: {
-                                type:"Point",
-                                coordinates:[req.body.longitude,req.body.latitude]
-                            }
+                            account:{password: hash}
                         });
                         user.save()
                             .then(result => {
                                 console.log(result);
-                                res.status(201).json({
+                                res.status(200).json({
                                     message: 'User created'
                                 });
                             })
