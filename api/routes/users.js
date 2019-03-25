@@ -54,7 +54,8 @@ router.post('/signup',(req,res,next) => {
                             lastName:req.body.lastName
                             ,
                             contact:{
-                                email: req.body.email},
+                                email: req.body.email
+                            },
                             account:{password: hash}
                         });
                         user.save()
@@ -87,16 +88,16 @@ router.post('/login',(req,res,next) => {
         .exec()
         .then(user =>{
             if(user.length < 1){
-                return res.status(401).json({
+                return res.status(400).json({
                     message: 'Authentication failed'
                 });
             }
             bcrypt.compare(req.body.password, user[0].account.password, (err, result)=> {
                 if(err){
                     return res.status(401).json({
-                        message: 'Authentication Failed'
+                        message: 'Password Error'
                     });
-                }
+                 }
                 if(result){
                     const token = jwt.sign({
                             email:user[0].contact.email,
@@ -109,7 +110,8 @@ router.post('/login',(req,res,next) => {
                     );
                     return res.status(200).json({
                         message: 'Authentication successful',
-                        token: token
+                        token: token,
+                        _id:user[0]._id
                     });
                 }
                 res.status(401).json({
