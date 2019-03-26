@@ -37,7 +37,7 @@ module.exports.listen = function(app){
         socket.on('message',(data)=>{
            //purpose:saves message to Db
            //params: data ={message,receiver,sender}
-           //return: emits incoming event to sender and receiver  
+           //return: emits incoming event to sender and receiver
            const message_model = new Message({
               _id: new mongoose.Types.ObjectId(),
               message:data.message,
@@ -46,7 +46,7 @@ module.exports.listen = function(app){
            })
            message_model.save()
            .then((result)=>{
-            console.log(`MESSAGE-> ${data.message}`)
+            console.log(` ${result}`)
             socket.emit("incomingMessage",{message:data.message});
             const receiverSocketId = mobileSockets[data.receiver];
             socket.to(receiverSocketId).emit('incomingMessage',{message:data.message})
