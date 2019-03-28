@@ -1,32 +1,17 @@
+/* npm modules**********/
 const express = require('express');
-const router = express.Router();
-const User = require('../models/user');// We will need this to instantiate a user from the user.js model
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+/* *********/
+const router = express.Router();    //router
 
+/* models*****/
+const User = require('../models/user');
+const Message = require('../models/message');
+const Appointment = require('../models/appointments');
 
-//This route is a post request that creates and stores a new user to the database.
-// router.post('/',(req, res, next) => {
-//     const user = new User({
-//         _id: new mongoose.Types.ObjectId(),
-//         name: {
-//             first: req.body.firstName,
-//             last: req.body.lastName
-//         },
-//
-//         contact: {
-//             email: req.body.email,
-//             address: req.body.address
-//         },
-//         age: req.body.age
-//     });
-//     user.save();
-//     res.status(200).json({message:"complete"})
-// });
-
-//This route uses a post request that creates and stores a new user to the database.
-
+/** routes*/
 router.post('/signup',(req,res,next) => {
     User.find({
         contact:
@@ -222,6 +207,84 @@ router.post('/updateUser', (req,res) => {
         }
     )
 });
+
+function returnArray (obj){
+    return [object]
+}
+router.post('/createAppointment',(req,res,next)=>{
+    /** route first searches for appointment. updates if its there or creates one*/
+    
+    const profId = req.body.professionalId;
+    const appointmentDate = req.body.appointmentDate
+    const appointmentTime =req.body.appointmentTime
+    const userId = req.body.userId
+
+     appointmentObject = {};
+     appointmentArray = []
+
+     appointmentDateObj = {}
+     appointmentDateArray = []
+     
+     appointmentTimeObject = {}
+     appointmentTimeArray = []
+
+    appointmentTimeObject[appointmentTime] = userId;
+    appointmentTimeArray.push(appointmentTimeObject)
+
+    appointmentDateObj[appointmentDate] = appointmentTimeArray
+    appointmentDateArray.push(appointmentDateObj)
+
+    appointmentObject = appointmentDateArray
+
+    /* below is an example of the structure of the object
+     appointmentObject = {
+        'prof_1222':{
+            '10/14/2019': {
+                 '1-1:30pm': 'user_123'
+            }
+        }
+    }
+    */
+
+    let appointment = new Appointment({
+        professionalId:profId,
+        bookings:[appointmentObject]
+    })
+    appointment.markModified('bookings');   //required mongoose method for mixed type schema
+    
+    Appointment.findOne({professionalId:profId})
+      .then((result)=>{
+          if(result){
+               //if exists
+               console.log('found result')
+          Appointment.findOneAndUpdate({professionalId:profId},{appointment})
+            .then((result)=>{
+                res.status(200).json({
+                    result
+                })
+            })
+            .catch((err)=>{
+                res.status(500).json({
+                    error:err
+                })
+            })
+           }else{
+               // doesnt exist
+               appointment.save()
+                 .then(result=>res.status(200).json({result}))
+                 .catch(err=>res.status(500).json({message:"failed to save"}))
+           }
+           
+        })
+        .catch((err)=>res.status(500).json({err}))
+          
+})
+
+router.get("/appointments",(req,res)=>{
+    Appointment.find()
+      .then(result=>res.status(200).json({result}))
+      .catch(err=>res.status(500).json({message:'error occured',error:err}))
+})
 
 //fall routers that handles unknown routes
 router.get('*',(req,res)=>{
