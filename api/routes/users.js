@@ -211,31 +211,25 @@ router.post('/updateUser', (req,res) => {
 function returnArray (obj){
     return [object]
 }
+
+router.post('/appointment',(req,res)=>{
+    Appointment.findOne({professionalId:req.body.professionalId})
+       .then(result=> {
+        if(result){
+            //found on
+            data = result.bookings
+            const dates = data.filter((val)=> val.date == req.body.appointmentDate)
+            dates.times.push({time:req.body.appointmentTime,
+                userId:req.body.userId
+            })
+            res.status(200).json({dates})
+        }
+    })
+        
+         .catch(error=>res.status(500).json({error:error}))
+})
 router.post('/createAppointment',(req,res,next)=>{
     /** route first searches for appointment. updates if its there or creates one*/
-    
-    const profId = req.body.professionalId;
-    const appointmentDate = req.body.appointmentDate
-    const appointmentTime =req.body.appointmentTime
-    const userId = req.body.userId
-
-     appointmentObject = {};
-     appointmentArray = []
-
-     appointmentDateObj = {}
-     appointmentDateArray = []
-     
-     appointmentTimeObject = {}
-     appointmentTimeArray = []
-
-    appointmentTimeObject[appointmentTime] = userId;
-    appointmentTimeArray.push(appointmentTimeObject)
-
-    appointmentDateObj[appointmentDate] = appointmentTimeArray
-    appointmentDateArray.push(appointmentDateObj)
-
-    appointmentObject = appointmentDateArray
-
     /* below is an example of the structure of the object
      appointmentObject = {
         'prof_1222':{
@@ -245,19 +239,28 @@ router.post('/createAppointment',(req,res,next)=>{
         }
     }
     */
-
     let appointment = new Appointment({
-        professionalId:profId,
-        bookings:[appointmentObject]
+        professionalId:req.body.professionalId,
+        bookings: [{
+            date:req.body.appointmentDate,  //date will be stored as a string
+            times:[{
+                    userId:req.body.userId, //userId of individual making appointment
+                    time:req.body.appointmentTime    //appointment Time
+                  }] 
+          }]
     })
-    appointment.markModified('bookings');   //required mongoose method for mixed type schema
+
+
+    // appointment.markModified('bookings');   //required mongoose method for mixed type schema
     
-    Appointment.findOne({professionalId:profId})
+    Appointment.findOne({professionalId:req.body.professionalId})
       .then((result)=>{
           if(result){
                //if exists
                console.log('found result')
-          Appointment.findOneAndUpdate({professionalId:profId},{appointment})
+          result.Update({professionalId:req.body.professionalId},{$push:{
+              
+          }},done)
             .then((result)=>{
                 res.status(200).json({
                     result
