@@ -10,7 +10,7 @@
   "keywords": [
     "selfcare"
   ],
-  "author": "Fortune Creig Phiri; Ife Ajibola; Sherwayne Walrond",
+  "author": "Fortune Creig Phiri; Sherwayne Walrond",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.4",
