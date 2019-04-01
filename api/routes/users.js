@@ -208,36 +208,16 @@ router.post('/updateUser', (req,res) => {
     )
 });
 
-function returnArray (obj){
-    return [object]
-}
 
-router.post('/appointment',(req,res)=>{
-    Appointment.findOne({professionalId:req.body.professionalId})
-       .then(result=> {
-        if(result){
-            //found on
-            data = result.bookings
-            const dates = data.filter((val)=> val.date == req.body.appointmentDate)
-            dates.times.push({time:req.body.appointmentTime,
-                userId:req.body.userId
-            })
-            res.status(200).json({dates})
-        }
-    })
-        
-         .catch(error=>res.status(500).json({error:error}))
-})
 router.post('/createAppointment',(req,res,next)=>{
     /** route first searches for appointment. updates if its there or creates one*/
     /* below is an example of the structure of the object
      appointmentObject = {
-        'prof_1222':{
-            '10/14/2019': {
-                 '1-1:30pm': 'user_123'
+          'prof_1222':{ '10/14/2019': {
+                         '1-1:30pm': 'user_123'
+                        }
+                  }
             }
-        }
-    }
     */
     let appointment = new Appointment({
         professionalId:req.body.professionalId,
@@ -250,37 +230,26 @@ router.post('/createAppointment',(req,res,next)=>{
           }]
     })
 
-
-    // appointment.markModified('bookings');   //required mongoose method for mixed type schema
-    
     Appointment.findOne({professionalId:req.body.professionalId})
       .then((result)=>{
           if(result){
                //if exists
                console.log('found result')
-          result.Update({professionalId:req.body.professionalId},{$push:{
-              
-          }},done)
-            .then((result)=>{
-                res.status(200).json({
-                    result
+               const dateAppointment = req.body.appointmentDate
+               data = result.bookings   //has array of dates and times
+                data.filter((date)=>{
+                    console.log(date)
                 })
-            })
-            .catch((err)=>{
-                res.status(500).json({
-                    error:err
-                })
-            })
+               //check if date is there
+
            }else{
                // doesnt exist
                appointment.save()
                  .then(result=>res.status(200).json({result}))
                  .catch(err=>res.status(500).json({message:"failed to save"}))
-           }
-           
+           }    
         })
-        .catch((err)=>res.status(500).json({err}))
-          
+        .catch((err)=>res.status(500).json({err}))         
 })
 
 router.get("/appointments",(req,res)=>{
