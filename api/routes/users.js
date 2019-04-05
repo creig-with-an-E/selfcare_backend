@@ -208,6 +208,21 @@ router.post('/updateUser', (req,res) => {
     )
 });
 
+router.post("/findByEmail",(req,res)=>{
+    "use strict";
+
+    User.findOne({contact:{email:req.body.email}})
+        .then((result)=>{
+          res.status(200).json(result)
+        })
+        .catch((error)=>{
+          res.status(500).json({
+               message: "error occured",
+               error:error
+                        })
+        })
+});
+
 
 router.post('/createAppointment',(req,res,next)=>{
     /** route first searches for appointment. updates if its there or creates one*/

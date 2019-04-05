@@ -227,7 +227,7 @@ router.post('/updateProfessional', (req,res) => {
     )
 });
 
-router.get('/findByLocation',(req,res)=>{
+router.post('/findByLocation',(req,res)=>{
 
     const location = req.body.location;     //user location
 
