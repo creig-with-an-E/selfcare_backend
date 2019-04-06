@@ -181,7 +181,7 @@ router.get('/findById',(req,res,next) => {
 
 router.get('/',(req,res)=>{
     Professional.find()
-        .select()
+        .select('firstName lastName contact.email userName bio rating')
         .exec()
         .then(professionals => {
             //proUsers is already javascript object,

@@ -5,18 +5,6 @@ const Appointment = require("../models/appointments");
 const Professional = require("../models/professional")
 const User = require("./../models/user");
 
-
-// router.post('/createAppointment',(req,res)=>{
-//     Professional.findById(req.body.professionalId)
-//         .then((document)=>{
-//             document['bookings'].push({name:'creig',time:'3-3:30pm'})
-//             document.save((res)=>console.log("saved"))
-//             res.status(200).json({document})
-//         }).catch(error=>{
-//             res.status(500).json({errorMessage:'an error occurred'})
-//         })
-// })
-
 router.get('/',(req,res)=>{
   //gets all appointments
   Appointment.find()
@@ -41,7 +29,6 @@ router.post("/",(req,res)=>{
         time: req.body.time
     })
 
-    //find customer
     appointment.save()
      .then(success => {
          Professional.findById(req.body.professionalId)
@@ -72,12 +59,24 @@ router.post("/",(req,res)=>{
     })
 });
 
+router.post("/findByUser",(req,res)=>{
+  Appointment.find({userId:req.body.userId})
+    .populate('userId')
+    .then(result=>{
+       res.status(200).json(result)
+    }).catch(error=>{
+        res.status(500).json({message:"failed to get results",
+                              error:error
+                            })
+    })
+})
+
 router.post("/findByProfessional",(req,res)=>{
   //returns appointments for professional
   //properties to return passed as the second prop in find
-  Appointment.find({professionalId:req.body.professionalId})
-   .populate('professionalId')
-   .select('firstName')
+  Appointment.find({professionalId:req.body.professionalId}) 
+  .populate('professionalId')
+  .select('firstName lastName')
    .then(result=>{
       res.status(200).json(result)
     }).catch(error=>{
@@ -86,6 +85,14 @@ router.post("/findByProfessional",(req,res)=>{
           error:error
         })
     })
+})
+
+router.post("*",(req,res)=>{
+    res.status(404).json({message:"endPoint not Found"})
+})
+
+router.get("*",(req,res)=>{
+    res.status(404).json({message:"endPoint not Found"})
 })
 
 module.exports = router;
