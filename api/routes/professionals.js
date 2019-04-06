@@ -154,6 +154,7 @@ router.get('/findById',(req,res,next) => {
     const id = req.body._id;
     Professional.findById(id)
         .select()
+        .populate("Appointment", "_id userId time date")
         .exec()
         .then(doc => {
             //testing that its coming from database

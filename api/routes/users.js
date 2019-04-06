@@ -10,6 +10,7 @@ const router = express.Router();    //router
 const User = require('../models/user');
 const Message = require('../models/message');
 const Appointment = require('../models/appointments');
+const Professional = require('./../models/professional');
 
 /** routes*/
 router.post('/signup',(req,res,next) => {
@@ -128,6 +129,16 @@ router.get('/',(req,res)=>{
         });
 });
 
+router.post('/createAppointment',(req,res)=>{
+    Professional.findById(req.body.professionalId)
+        .then((document)=>{
+            document['bookings'].push({name:'creig',time:'3-3:30pm'})
+            document.save((res)=>console.log("saved"))
+            res.status(200).json({document})
+        }).catch(error=>{
+            res.status(500).json({errorMessage:'an error occurred'})
+        })
+})
 router.delete('/:userId',(req,res,next) => {
     User.remove({_id: req.params.userId})
         .exec()
@@ -148,6 +159,7 @@ router.get('/findById',(req,res,next) => {
     const id = req.body._id;
     User.findById(id)
         .select()
+        .populate()
         .exec()
         .then(doc => {
             //testing that its coming from database
@@ -222,50 +234,6 @@ router.post("/findByEmail",(req,res)=>{
                         })
         })
 });
-
-
-router.post('/createAppointment',(req,res,next)=>{
-    /** route first searches for appointment. updates if its there or creates one*/
-    /* below is an example of the structure of the object
-     appointmentObject = {
-          'prof_1222':{ '10/14/2019': {
-                         '1-1:30pm': 'user_123'
-                        }
-                  }
-            }
-    */
-    let appointment = new Appointment({
-        professionalId:req.body.professionalId,
-        bookings: [{
-            date:req.body.appointmentDate,  //date will be stored as a string
-            times:[{
-                    userId:req.body.userId, //userId of individual making appointment
-                    time:req.body.appointmentTime    //appointment Time
-                  }] 
-          }]
-    })
-
-    Appointment.findOne({professionalId:req.body.professionalId})
-      .then((result)=>{
-          if(result){
-               //if exists
-               console.log('found result')
-               const dateAppointment = req.body.appointmentDate
-               data = result.bookings   //has array of dates and times
-                data.filter((date)=>{
-                    console.log(date)
-                })
-               //check if date is there
-
-           }else{
-               // doesnt exist
-               appointment.save()
-                 .then(result=>res.status(200).json({result}))
-                 .catch(err=>res.status(500).json({message:"failed to save"}))
-           }    
-        })
-        .catch((err)=>res.status(500).json({err}))         
-})
 
 router.get("/appointments",(req,res)=>{
     Appointment.find()

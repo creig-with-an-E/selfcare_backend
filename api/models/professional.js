@@ -1,24 +1,16 @@
 const mongoose = require('mongoose');
 
-const professionalSchema = mongoose.Schema({
-    /*
-    *This is the professional's schema which consists of id, name, contact, and age
-    * */
 
+const professionalSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    // this will be a composite object containing the both first and last name
         firstName: {type:String, required:true},
         lastName: {type:String, required:true},
-
     account:{
         userName:String,
         password:String,
     },
     contact:{
-        email: {
-            type:String,
-            required:true
-        },
+        email: {type:String, required:true},
         phone: Number, 
         address: {
             type: String,
@@ -41,12 +33,7 @@ const professionalSchema = mongoose.Schema({
     bio:{type: String},
     rating:{type:Number,default:3},
     dob: Date,  //date of birth as opposed to age
-
-    messages:{
-        type:String,
-        sender_id: String,  //this is the user _id
-        message: String,
-    }
+    bookings:[] //stores references to appointment
 });
 
 professionalSchema.index({ location: "2dsphere" });
