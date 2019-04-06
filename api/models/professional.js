@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-
-const professionalSchema = mongoose.Schema({
+const professionalSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
         firstName: {type:String, required:true},
         lastName: {type:String, required:true},
@@ -33,7 +33,7 @@ const professionalSchema = mongoose.Schema({
     bio:{type: String},
     rating:{type:Number,default:3},
     dob: Date,  //date of birth as opposed to age
-    bookings:[] //stores references to appointment
+    bookings:[{type:Schema.Types.ObjectId,ref:'Appointments'}]    //stores references to appointment
 });
 
 professionalSchema.index({ location: "2dsphere" });

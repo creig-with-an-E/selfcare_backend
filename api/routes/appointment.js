@@ -17,8 +17,21 @@ const User = require("./../models/user");
 //         })
 // })
 
+router.get('/',(req,res)=>{
+  //gets all appointments
+  Appointment.find()
+    .populate('professional')
+    .then((appointments)=>{
+        res.status(200).json(appointments)
+    }).catch(error=>{
+        res.status(500).json({
+           message:"error occured fetching appointment"
+        })
+    })
+})
+
+
 router.post("/",(req,res)=>{
-    console.log("hitting route")
     //handles customer appointment creation
     const appointment = new Appointment({
         _id: new mongoose.Types.ObjectId(),
@@ -27,26 +40,52 @@ router.post("/",(req,res)=>{
         date: req.body.date,
         time: req.body.time
     })
+
     //find customer
     appointment.save()
      .then(success => {
          Professional.findById(req.body.professionalId)
             .then((professional)=>{
-                console.log(professional)
                 if(professional){
                     professional.bookings.push(appointment._id)
                     professional.save()
-                      .then((result)=>res.json(success))
                       .catch((error)=>res.status(500).json({message:"error to professional"}))
                 }else{
                     res.status(500).json({message:"professional not found"})
                 }
             }).catch((error)=>res.status(500).json({error:error}))
-     }).catch(reject => {
+     }).then(result =>{
+        User.findById(req.body.userId)
+          .then(user=>{
+              if(user){
+                  user['bookings'].push(appointment._id)
+                  user.save()
+                    .then(success=>{
+                        res.status(200).json({message:"Appointment Booked"})
+                    })
+              }
+          })
+     })
+     .catch(reject => {
         "use strict";
         res.status(500).json(reject)
     })
 });
 
+router.post("/findByProfessional",(req,res)=>{
+  //returns appointments for professional
+  //properties to return passed as the second prop in find
+  Appointment.find({professionalId:req.body.professionalId})
+   .populate('professionalId')
+   .select('firstName')
+   .then(result=>{
+      res.status(200).json(result)
+    }).catch(error=>{
+        res.status(500).json({
+          message:"error occured",
+          error:error
+        })
+    })
+})
 
 module.exports = router;

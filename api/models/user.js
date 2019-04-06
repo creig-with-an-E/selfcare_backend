@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     firstName: {type:String, required:true},
     lastName: {type:String, required:true},
@@ -28,7 +29,7 @@ const userSchema = mongoose.Schema({
     images:{
         imageName:String    // this store the name of the image. directory path will be static
     },
-    appointments:[] //reference to appointmemnt._id in relevant model
+    bookings:[{type:Schema.Types.ObjectId,ref:'Appointments'}]    //stores references to appointment //reference to appointmemnt._id in relevant model
 
 });
 
