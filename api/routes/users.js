@@ -97,7 +97,7 @@ router.post('/login',(req,res,next) => {
                     return res.status(200).json({
                         message: 'Authentication successful',
                         token: token,
-                        userEmail:user[0].contact.email
+                        userId:user[0]._id
                     });
                 }
                 res.status(401).json({
@@ -129,16 +129,16 @@ router.get('/',(req,res)=>{
         });
 });
 
-router.post('/createAppointment',(req,res)=>{
-    Professional.findById(req.body.professionalId)
-        .then((document)=>{
-            document['bookings'].push({name:'creig',time:'3-3:30pm'})
-            document.save((res)=>console.log("saved"))
-            res.status(200).json({document})
-        }).catch(error=>{
-            res.status(500).json({errorMessage:'an error occurred'})
-        })
-})
+// router.post('/createAppointment',(req,res)=>{
+//     Professional.findById(req.body.professionalId)
+//         .then((document)=>{
+//             document['bookings'].push({name:'creig',time:'3-3:30pm'})
+//             document.save((res)=>console.log("saved"))
+//             res.status(200).json({document})
+//         }).catch(error=>{
+//             res.status(500).json({errorMessage:'an error occurred'})
+//         })
+// })
 router.delete('/:userId',(req,res,next) => {
     User.remove({_id: req.params.userId})
         .exec()
@@ -155,23 +155,17 @@ router.delete('/:userId',(req,res,next) => {
         });
 });
 
-router.get('/findById',(req,res,next) => {
+
+router.post('/findById',(req,res,next) => {
     const id = req.body._id;
+    console.log(req.body)
     User.findById(id)
         .select()
         .populate()
         .exec()
-        .then(doc => {
-            //testing that its coming from database
-            console.log("from database", doc);
-            if(doc){
-                res.status(200).json({
-                    professional: doc,
-                    request: {
-                        type: 'GET',
-                        url: 'http://localhost:3000/users/'
-                    }
-                });
+        .then(user => {
+            if(user){
+                res.status(200).json(user);
             }else{
                 res.status(404).json({message: 'No valid entry found from provided ID'})
             }
