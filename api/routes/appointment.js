@@ -28,7 +28,7 @@ router.post("/",(req,res)=>{
         date: req.body.date,
         time: req.body.time
     })
-
+    console.log(req.body);
     appointment.save()
      .then(success => {
          Professional.findById(req.body.professionalId)
@@ -61,7 +61,7 @@ router.post("/",(req,res)=>{
 
 router.post("/findByUser",(req,res)=>{
   Appointment.find({userId:req.body.userId})
-    .populate('userId')
+    .populate('professionalId')
     .then(result=>{
        res.status(200).json(result)
     }).catch(error=>{
@@ -69,14 +69,13 @@ router.post("/findByUser",(req,res)=>{
                               error:error
                             })
     })
-})
+});
 
 router.post("/findByProfessional",(req,res)=>{
   //returns appointments for professional
   //properties to return passed as the second prop in find
-  Appointment.find({professionalId:req.body.professionalId}) 
-  .populate('professionalId')
-  .select('firstName lastName')
+  Appointment.find({professionalId:req.body.professionalId})
+   .populate('userId')
    .then(result=>{
       res.status(200).json(result)
     }).catch(error=>{

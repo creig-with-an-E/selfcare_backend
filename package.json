@@ -10,6 +10,16 @@
   "keywords": [
     "selfcare"
   ],
+  "extends": "standard",
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "semi": [
+      2,
+      "always"
+    ]
+  },
   "author": "Fortune Creig Phiri; Sherwayne Walrond",
   "license": "ISC",
   "dependencies": {
