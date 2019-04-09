@@ -83,15 +83,15 @@ router.post('/login',(req,res,next) => {
                    });
                }
                if(result){
-                   const token = jwt.sign({
-                       email:professional[0].contact.email,
-                       professionalId: professional[0]._id
-                   },
+                   // const token = jwt.sign({
+                   //     email:professional[0].contact.email,
+                   //     professionalId: professional[0]._id
+                   // },
                        // process.env.JWT_KEY,
                        // {
                        //     expiresIn: "1h"
                        // }
-                       );
+                       // );
                    return res.status(200).json({
                        message: 'Authentication successful',
                        // token: token,

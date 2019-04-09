@@ -85,18 +85,17 @@ router.post('/login',(req,res,next) => {
                     });
                  }
                 if(result){
-                    const token = jwt.sign({
-                            email:user[0].contact.email,
-                            userId: user[0]._id
-                        },
-                        process.env.JWT_KEY,
-                        {
-                            expiresIn: "1h"
-                        }
-                    );
+                    // const token = jwt.sign({
+                    //         email:user[0].contact.email,
+                    //         userId: user[0]._id
+                    //     },
+                    //     process.env.JWT_KEY,
+                    //     {
+                    //         expiresIn: "1h"
+                    //     }
+                    // );
                     return res.status(200).json({
                         message: 'Authentication successful',
-                        token: token,
                         userId:user[0]._id
                     });
                 }
@@ -129,16 +128,7 @@ router.get('/',(req,res)=>{
         });
 });
 
-// router.post('/createAppointment',(req,res)=>{
-//     Professional.findById(req.body.professionalId)
-//         .then((document)=>{
-//             document['bookings'].push({name:'creig',time:'3-3:30pm'})
-//             document.save((res)=>console.log("saved"))
-//             res.status(200).json({document})
-//         }).catch(error=>{
-//             res.status(500).json({errorMessage:'an error occurred'})
-//         })
-// })
+
 router.delete('/:userId',(req,res,next) => {
     User.remove({_id: req.params.userId})
         .exec()
