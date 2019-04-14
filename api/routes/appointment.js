@@ -1,9 +1,14 @@
+'use strict'
+
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const Appointment = require("../models/appointments");
 const Professional = require("../models/professional")
 const User = require("./../models/user");
+
+//Email Helper Function
+const EmailHelper = require("../HelperFunctions/SendMessage")
 
 router.get('/',(req,res)=>{
   //gets all appointments
@@ -18,6 +23,14 @@ router.get('/',(req,res)=>{
     })
 })
 
+router.post("/sendEmail",(req,res,next)=>{
+    const EmailHelperObj = new EmailHelper()
+    EmailHelperObj.sendNewAccountEmail(req.body.sendTo).then((result)=>{
+        return result
+    }).then((result)=>{
+        res.status(200).json({message:'sent'})
+    }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
+})
 
 router.post("/",(req,res)=>{
     //handles customer appointment creation

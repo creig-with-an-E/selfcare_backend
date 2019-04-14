@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server --debug"
   },
   "keywords": [
     "selfcare"
@@ -26,8 +26,10 @@
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "googleapis": "^39.2.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.10",
-    "socket.io": "^2.2.0",
-    "jsonwebtoken": "^8.5.1"
+    "nodemailer": "^6.1.0",
+    "socket.io": "^2.2.0"
   }
 }
