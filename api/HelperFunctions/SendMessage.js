@@ -1,16 +1,21 @@
+/*
+to send message import class and create instance then reference the send method
+*/
+
 const nodemailer = require('nodemailer')
 const {google } = require("googleapis")
 const OAuth2 = google.auth.OAuth2
+const dotenv = require('dotenv').config();
 
 class EmailHelper{
     constructor(){
          this.oauth2Client = new OAuth2(
-            "737516009060-di72v3ve7sp4k3056c3md06atqr1q9bq.apps.googleusercontent.com",     //clientId
-            "9H-nhoM-vjxeg-jk-7AdAipp", // Client Secret
+            process.env.api_clientId,     //clientId
+            process.env.api_secret, // Client Secret
             "https://developers.google.com/oauthplayground" 
         )
         this.oauth2Client.setCredentials({
-            refresh_token: "1/BM1KQ_PL6o1ln9RScieJGaDaI82RTLYzuSay5B2aqpyS6dW_whXYywSncsnjtPO7"
+            refresh_token: process.env.api_refreshToken
         }); 
 
         this.accessToken = null
@@ -20,10 +25,10 @@ class EmailHelper{
             service: "gmail",
             auth: {
                  type: "OAuth2",
-                 user: "the.selfcareapp@gmail.com", 
-                 clientId: "737516009060-di72v3ve7sp4k3056c3md06atqr1q9bq.apps.googleusercontent.com",
-                 clientSecret: "9H-nhoM-vjxeg-jk-7AdAipp",
-                 refreshToken: "1/BM1KQ_PL6o1ln9RScieJGaDaI82RTLYzuSay5B2aqpyS6dW_whXYywSncsnjtPO7",
+                 user: process.env.api_userId, 
+                 clientId: process.env.api_clientId,
+                 clientSecret: process.env.api_secret,
+                 refreshToken: process.env.api_refreshToken,
                  accessToken: this.accessToken
             }
             });
