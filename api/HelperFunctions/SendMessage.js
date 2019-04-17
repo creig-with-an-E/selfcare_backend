@@ -44,7 +44,7 @@ class EmailHelper{
             feedback:feedback,
 
             generateTextFromHTML: true,
-            html: "<b>Thank you for enrolling for self care app</b>"
+            html: "<b><script>`${feedback}`</script></b>"
         };
            return new Promise((resolve,reject)=>{
                this.smtpTransport.sendMail(mailOptions, (error, response) => {

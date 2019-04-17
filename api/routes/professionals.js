@@ -272,8 +272,8 @@ router.post('/contactUs',(req,res)=>{
     ;
     EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
         console.log(result)
-    }).then((result)=>{
-        res.status(200).json({message:'sent',result})
+    }).then((response)=>{
+        res.status(200).json({message:'sent',result:response})
     }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
 
 });

@@ -115,7 +115,7 @@ router.post('/contactUs',(req,res)=>{
     //sendNewAccountEmail(sendTo,from, feedback, cc,subject)
     console.log("hitting route")
     const EmailHelperObj = new EmailHelper();
-    const {to,cc,subject,feeback,from} = req.body;
+    const {to,cc,subject,feedback,from} = req.body;
 
     const email =User.findById(from)
         .select("contact.email")
@@ -126,7 +126,7 @@ router.post('/contactUs',(req,res)=>{
         })
 
     ;
-    EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
+    EmailHelperObj.sendNewAccountEmail(to, email.email, feedback, cc, subject).then((result)=>{
         console.log(result)
     }).then((result)=>{
         res.status(200).json({message:'sent',result})
