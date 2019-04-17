@@ -254,27 +254,28 @@ router.post('/findByLocation',(req,res)=>{
     }).catch((error)=>res.status(400).json({err:error}))
 });
 
-router.post('/contactUs',(req,res)=>{
+router.post('/contactUs',(req,res,next)=>{
     // below is the function signature
     //sendNewAccountEmail(sendTo,from, feedback, cc,subject)
-    console.log("hitting route")
     const EmailHelperObj = new EmailHelper();
     const {to,cc,subject,feeback,from} = req.body;
 
-    const email =Professional.findById(from)
+    Professional.findById(from)
         .select("contact.email")
         .then((result)=>{
-            console.log(result)
+            const email = result.contact.email;
+
+            EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
+                console.log(result)
+            }).then((response)=>{
+                   res.status(200).json({message:'sent',result:response})
+                }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
         }).catch(error=>{
             console.log(error)
         })
 
     ;
-    EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
-        console.log(result)
-    }).then((response)=>{
-        res.status(200).json({message:'sent',result:response})
-    }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
+
 
 });
 
