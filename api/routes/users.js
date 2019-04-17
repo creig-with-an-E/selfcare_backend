@@ -8,9 +8,7 @@ const router = express.Router();    //router
 
 /* models*****/
 const User = require('../models/user');
-const Message = require('../models/message');
 const Appointment = require('../models/appointments');
-const Professional = require('./../models/professional');
 
 /** routes*/
 router.post('/signup',(req,res,next) => {

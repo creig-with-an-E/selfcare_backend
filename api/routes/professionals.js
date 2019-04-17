@@ -1,9 +1,14 @@
+"use strict"
+
 const express = require('express');
 const router = express.Router();
 const Professional = require('../models/professional');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+
+const EmailHelper = require('./../HelperFunctions/SendMessage');
 
 //This route uses a post request that creates and stores a new professional user to the database.
 
@@ -44,7 +49,8 @@ router.post('/signup',(req,res,next) => {
                         user.save()
                             .then(result => {
                                 console.log(result);
-                                res.status(201).json({
+                                res.status(200).json({
+                                    professionalId:user._id,
                                     message: 'User created'
                                 });
                             })
@@ -73,6 +79,7 @@ router.post('/login',(req,res,next) => {
         .then(professional =>{
             if(professional.length < 1){
                 return res.status(401).json({
+
                     message: 'Authentication failed'
                 });
             }
@@ -246,6 +253,31 @@ router.post('/findByLocation',(req,res)=>{
         res.status(200).json(results);
     }).catch((error)=>res.status(400).json({err:error}))
 });
+
+router.post('/contactUs',(req,res)=>{
+    // below is the function signature
+    //sendNewAccountEmail(sendTo,from, feedback, cc,subject)
+    console.log("hitting route")
+    const EmailHelperObj = new EmailHelper();
+    const {to,cc,subject,feeback,from} = req.body;
+
+    const email =Professional.findById(from)
+        .select("contact.email")
+        .then((result)=>{
+            console.log(result)
+        }).catch(error=>{
+            console.log(error)
+        })
+
+    ;
+    EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
+        return result
+    }).then((result)=>{
+        res.status(200).json({message:'sent',result})
+    }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
+
+});
+
 
 //fall routers that handles unknown routes
 router.get('*',(req,res)=>{

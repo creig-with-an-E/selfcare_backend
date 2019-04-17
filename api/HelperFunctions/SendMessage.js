@@ -34,12 +34,15 @@ class EmailHelper{
             });
     }
 
-      sendNewAccountEmail(sendTo){
+      sendNewAccountEmail(sendTo,from, feedback, cc,subject){
          console.log("sending message")
          let mailOptions = {
-            from: "the.selfcareapp@gmail.com",
+            from: from,
+            cc:cc,
             to: sendTo,
-            subject: "Welcome to self care the app",
+            subject: subject,
+            feedback:feedback,
+
             generateTextFromHTML: true,
             html: "<b>Thank you for enrolling for self care app</b>"
         };
