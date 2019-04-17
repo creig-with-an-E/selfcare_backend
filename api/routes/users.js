@@ -110,6 +110,31 @@ router.post('/login',(req,res,next) => {
         });
 });
 
+router.post('/contactUs',(req,res)=>{
+    // below is the function signature
+    //sendNewAccountEmail(sendTo,from, feedback, cc,subject)
+    console.log("hitting route")
+    const EmailHelperObj = new EmailHelper();
+    const {to,cc,subject,feeback,from} = req.body;
+
+    const email =User.findById(from)
+        .select("contact.email")
+        .then((result)=>{
+            console.log(result)
+        }).catch(error=>{
+            console.log(error)
+        })
+
+    ;
+    EmailHelperObj.sendNewAccountEmail(to, email.email, feeback, cc, subject).then((result)=>{
+        console.log(result)
+    }).then((result)=>{
+        res.status(200).json({message:'sent',result})
+    }).catch((err)=>{return err}).catch((err)=>res.status(500).json({message:'failed to send'}))
+
+});
+
+
 //This route is a GET request that fetches all users
 router.get('/',(req,res)=>{
     User.find()
